@@ -46,11 +46,12 @@ m, c = np.linalg.lstsq(A, dynamic_pressure, rcond=None)[0]
 print(m, c)
 
 # calculate the velocities
-velos = np.sqrt(144 * dynamic_pressure * dynamic_pressure * 2 / rho_air)
+velos = np.sqrt(144 * dynamic_pressure * 2 / rho_air)
 fan_speed = pressures[:, 1]
-A = np.vstack([fan_speed**2, fan_speed, np.ones_like(fan_speed)]).T
-m2, m1, c1 = np.linalg.lstsq(A, velos, rcond=None)[0]
-print(m2, m1, c1)
+A = np.vstack([fan_speed, np.ones_like(fan_speed)]).T
+m1, c1 = np.linalg.lstsq(A, velos, rcond=None)[0]
+print(m1, c1)
+print(velos)
 
 # plot the data
 plt.figure(1)
@@ -64,7 +65,7 @@ plt.title('Pitot Dynamic Pressure vs Tunnel Pressure Difference')
 
 plt.figure(2)
 plt.scatter(fan_speed, velos, marker='o', color='b', facecolors='none', label='Calculated Values')
-plt.plot(fan_speed, m2*fan_speed**2 + m1*fan_speed + c1, linestyle='--', color='r', linewidth=1, label='Best fit')
+plt.plot(fan_speed, m1*fan_speed + c1, linestyle='--', color='r', linewidth=1, label='Best fit')
 plt.legend()
 plt.xlabel(r'Fan Speed (Hz)')
 plt.ylabel(r'V ($ft s^{-1}$)')
