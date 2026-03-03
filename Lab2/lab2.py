@@ -51,7 +51,7 @@ fan_speed = pressures[:, 1]
 A = np.vstack([fan_speed, np.ones_like(fan_speed)]).T
 m1, c1 = np.linalg.lstsq(A, velos, rcond=None)[0]
 print(m1, c1)
-print(velos)
+print(m1*35+c1)
 
 # plot the data
 plt.figure(1)
